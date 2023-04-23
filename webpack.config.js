@@ -2,6 +2,7 @@ const path = require('path');
 
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const miniCssExtractPlugin = require('mini-css-extract-plugin')
 
 console.log('process.env.NODE_ENV=', process.env.NODE_ENV) // 打印环境变量
 
@@ -23,8 +24,13 @@ const config = {
   module: {
     rules: [ // 转换规则
       {
-        test: /\.css$/,     // 匹配所有的 css 文件
-        use: ['style-loader', 'css-loader'],  // 需要使用的 loader (有顺序要求，从后向前执行)
+        test: /\.(s[ac]|c)ss$/i,     // 匹配所有的 css/sass/scss 文件
+        use: [
+          // 'style-loader',     // 把 css 文件写入 style 然后插入文件
+          miniCssExtractPlugin.loader,   //把 css 文件以 css 文件的形式引入 HTML 中
+          'css-loader', 
+          'sass-loader'
+        ],  // 需要使用的 loader (有顺序要求，从后向前执行)
       }
     ]
   },
@@ -32,7 +38,10 @@ const config = {
     new htmlWebpackPlugin({   // 将打包后 js css 等文件自动引入到 html 模板中
       template: './index.html'
     }),
-    new CleanWebpackPlugin()          // 每次打包前清除之前的 dist 文件夹
+    new CleanWebpackPlugin(),          // 每次打包前清除之前的 dist 文件夹
+    new miniCssExtractPlugin({ //把 css 文件以 css 文件的形式引入 HTML 中
+      filename: '[name].[hash:8].css'
+    })
   ]
 }
 
