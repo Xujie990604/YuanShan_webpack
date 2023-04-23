@@ -1,0 +1,37 @@
+{
+  "id": "2078041",
+  "name": "小码哥",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4550493",
+      "name": "我的",
+      "font_class": "wode",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "4954933",
+      "name": "购物车",
+      "font_class": "gouwuche",
+      "unicode": "e657",
+      "unicode_decimal": 58967
+    },
+    {
+      "icon_id": "9809642",
+      "name": "首页",
+      "font_class": "shouye",
+      "unicode": "e659",
+      "unicode_decimal": 58969
+    },
+    {
+      "icon_id": "11124955",
+      "name": "分类",
+      "font_class": "2",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    }
+  ]
+}

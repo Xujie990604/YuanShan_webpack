@@ -19,7 +19,7 @@ const config = {
     },
     compress: true,    // 是否启动压缩 public 中的目录中的内容
     port: 8080,        // 服务器端口号
-    open: true         // 是否自动打开浏览器
+    open: false         // 是否自动打开浏览器
   },
   module: {
     rules: [ // 转换规则
@@ -31,6 +31,30 @@ const config = {
           'css-loader', 
           'sass-loader'
         ],  // 需要使用的 loader (有顺序要求，从后向前执行)
+      },
+      {
+        test: /\.(jpe?g|png|gif)$/i,       // 对于图片资源的处理
+        type: 'asset',
+        generator: {
+          filename: 'images/[name][hash:8][ext]'  // 输出文件位置与文件名
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 50 * 1024    // 50kb 以下图片转成 base64
+          }
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,   // 对于字体图标的处理
+        type: 'asset',
+        generator: {
+          filename: "fonts/[name][hash:8][ext]"     // 输出文件位置以及文件名
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024                // 10kb 以下转成 base64
+          }
+        }
       }
     ]
   },
