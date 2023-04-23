@@ -24,7 +24,11 @@ const config = {
     rules: [ // 转换规则
       {
         test: /\.css$/,     // 匹配所有的 css 文件
-        use: ['style-loader', 'css-loader'],  // 需要使用的 loader (有顺序要求，从后向前执行)
+        use: [  // 需要使用的 loader (有顺序要求，从后向前执行)
+          'style-loader',
+          'css-loader',
+          'postcss-loader'    // 先使用 post-loader 解析 postcss 语法，然后再使用 css-loader 解析
+        ],  
       }
     ]
   },
