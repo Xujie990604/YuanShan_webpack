@@ -6,10 +6,21 @@ import './assets/font/iconfont.css'
 
 console.log('test webpack xujie');
 
-import a from './assets/images/a.png' // 引入图片
+// 通过 js 的方式来使用图片，因为这个图片会转化成 base64 影响阅读，先注释掉
+// import a from './assets/images/a.png' 
+// const img = new Image();
+// img.src = a;
+// document.getElementById('image').appendChild(img)
 
+class Person {
+  constructor(name) {
+    this.name = name
+  }
 
-const img = new Image();
-img.src = a;
+  say() {
+    console.log(`我的名字是 ${this.name}`);
+  }
+}
 
-document.getElementById('image').appendChild(img)
+const xujie = new Person('xujie')
+xujie.say()

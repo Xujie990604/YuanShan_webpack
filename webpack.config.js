@@ -55,6 +55,19 @@ const config = {
             maxSize: 10 * 1024                // 10kb 以下转成 base64
           }
         }
+      },
+      {
+        test: /\.js$/i,                   // 对于 js 文件的转化
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-env'
+              ],
+            }
+          }
+        ]
       }
     ]
   },
