@@ -64,7 +64,7 @@ const config = {
             loader: 'babel-loader',
             options: {
               presets: [
-                '@babel/preset-env'
+                '@babel/preset-env'  // 通过 npm 下载的 babel 官方维护预设
               ],
             }
           }
