@@ -13,6 +13,7 @@ const config = {
     filename: 'bundle.js',
     path: path.join(__dirname, 'dist')
   },
+  devtool: 'eval-cheap-module-source-map',    // 打包慢一点，但是能够看到源代码的错误 TODO: 根据环境进行区分  
   devServer: {
     static: {
       directory: path.join(__dirname, 'public')  // 静态文件目录，本地开发时不必 copy 此文件夹到 dist，可以直接来 public 文件夹读取
@@ -21,15 +22,24 @@ const config = {
     port: 8080,        // 服务器端口号
     open: false         // 是否自动打开浏览器
   },
+  resolve: {
+    alias: { //配置别名
+      '@': path.join(__dirname, 'src'),
+      'assets': path.join(__dirname, 'src/assets')
+    },
+    extensions: ['.js', 'ts', '.json'],  // 可以省略后缀名，会根据列表中的后缀名逐个尝试
+    modules: [path.join(__dirname, 'src'), 'node_modules']  // 解析模块时需要优先搜索的目录
+  },
   module: {
     rules: [ // 转换规则
       {
         test: /\.(s[ac]|c)ss$/i,     // 匹配所有的 css/sass/scss 文件
         use: [
-          // 'style-loader',     // 把 css 文件写入 style 然后插入文件
-          miniCssExtractPlugin.loader,   //把 css 文件以 css 文件的形式引入 HTML 中
+          // 'style-loader',             // 把 css 文件写入 style 然后插入文件
+          miniCssExtractPlugin.loader,   // 把 css 文件以 css 文件的形式引入 HTML 中
           'css-loader', 
-          'sass-loader'
+          'postcss-loader',              // 先使用 post-loader 解析 postcss 语法，然后再使用 css-loader 解析
+          'sass-loader',    
         ],  // 需要使用的 loader (有顺序要求，从后向前执行)
       },
       {
@@ -63,7 +73,7 @@ const config = {
             loader: 'babel-loader',
             options: {
               presets: [
-                '@babel/preset-env'   // 预设名和 babel.js 中对应
+                '@babel/preset-env'  // 通过 npm 下载的 babel 官方维护预设   // 预设名和 babel.js 中对应
               ],
             }
           }
