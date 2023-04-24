@@ -26,11 +26,11 @@ const config = {
       {
         test: /\.(s[ac]|c)ss$/i,     // 匹配所有的 css/sass/scss 文件
         use: [
-          // 'style-loader',     // 把 css 文件写入 style 然后插入文件
-          miniCssExtractPlugin.loader,   //把 css 文件以 css 文件的形式引入 HTML 中
+          // 'style-loader',             // 把 css 文件写入 style 然后插入文件
+          miniCssExtractPlugin.loader,   // 把 css 文件以 css 文件的形式引入 HTML 中
           'css-loader', 
-          'sass-loader',
-          'postcss-loader'    // 先使用 post-loader 解析 postcss 语法，然后再使用 css-loader 解析
+          'postcss-loader',              // 先使用 post-loader 解析 postcss 语法，然后再使用 css-loader 解析
+          'sass-loader',    
         ],  // 需要使用的 loader (有顺序要求，从后向前执行)
       },
       {
