@@ -63,7 +63,7 @@ const config = {
             loader: 'babel-loader',
             options: {
               presets: [
-                '@babel/preset-env'
+                '@babel/preset-env'   // 预设名和 babel.js 中对应
               ],
             }
           }
