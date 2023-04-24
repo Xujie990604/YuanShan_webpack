@@ -13,6 +13,7 @@ const config = {
     filename: 'bundle.js',
     path: path.join(__dirname, 'dist')
   },
+  devtool: 'eval-cheap-module-source-map',    // 打包慢一点，但是能够看到源代码的错误  
   devServer: {
     static: {
       directory: path.join(__dirname, 'public')  // 静态文件目录，本地开发时不必 copy 此文件夹到 dist，可以直接来 public 文件夹读取
