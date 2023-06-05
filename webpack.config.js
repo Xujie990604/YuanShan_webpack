@@ -4,23 +4,27 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
 
-console.log('process.env.NODE_ENV=', process.env.NODE_ENV) // 打印环境变量
+// 打印环境变量
+console.log('process.env.NODE_ENV=', process.env.NODE_ENV)
 
 const config = {
-  mode: 'development',      // 模式
+  mode: 'development',       // 配置文件的模式为 development
   entry: './src/index.js',   // 打包入口地址
   output: {
-    filename: 'bundle.js',
-    path: path.join(__dirname, 'dist')
+    filename: 'bundle.js',                       // 输出的文件名
+    path: path.join(__dirname, 'dist') // 输出的文件目录 
   },
   devtool: 'eval-cheap-module-source-map',    // 打包慢一点，但是能够看到源代码的错误 TODO: 根据环境进行区分  
+  // 本地服务器配置
   devServer: {
     static: {
-      directory: path.join(__dirname, 'public')  // 静态文件目录，本地开发时不必 copy 此文件夹到 dist，可以直接来 public 文件夹读取
+      // ! 仅在本地服务器启动时生效
+      // 静态文件目录，本地服务器启动时不必 copy 此文件夹到 内存中的 dist 中，会直接来 当前项目的 public 文件夹磁盘位置读取
+      directory: path.join(__dirname, 'public')
     },
     compress: true,    // 是否启动压缩 public 中的目录中的内容
     port: 8080,        // 服务器端口号
-    open: false         // 是否自动打开浏览器
+    open: false        // 是否自动打开浏览器
   },
   resolve: {
     alias: { //配置别名
@@ -34,13 +38,13 @@ const config = {
     rules: [ // 转换规则
       {
         test: /\.(s[ac]|c)ss$/i,     // 匹配所有的 css/sass/scss 文件
-        use: [
+        use: [ // 需要使用的 loader (有顺序要求，从后向前执行)
           // 'style-loader',             // 把 css 文件写入 style 然后插入文件
           miniCssExtractPlugin.loader,   // 把 css 文件以 css 文件的形式引入 HTML 中
           'css-loader',
           'postcss-loader',              // 先使用 post-loader 解析 postcss 语法，然后再使用 css-loader 解析
-          'sass-loader',
-        ],  // 需要使用的 loader (有顺序要求，从后向前执行)
+          'sass-loader',  // TODO: 这个顺序对吗？
+        ],
       },
       {
         test: /\.(jpe?g|png|gif)$/i,       // 对于图片资源的处理
@@ -82,18 +86,23 @@ const config = {
     ]
   },
   plugins: [ // 配置插件
-    new htmlWebpackPlugin({   // 将打包后 js css 等文件自动引入到 html 模板中
-      template: './index.html'
+    // 创建一个 html 文件，并把 webpack 打包后的静态文件自动插入到这个 html 文件当中
+    new htmlWebpackPlugin({
+      // 使用指定 HTML 文件当做创建的模板
+      template: 'public/index.html'
     }),
-    new CleanWebpackPlugin(),          // 每次打包前清除之前的 dist 文件夹
-    new miniCssExtractPlugin({ //把 css 文件以 css 文件的形式引入 HTML 中
+    // 每次打包前清除之前的 dist 文件夹
+    new CleanWebpackPlugin(),
+    //把 css 文件以 css 文件的形式引入 HTML 中
+    new miniCssExtractPlugin({
       filename: '[name].[hash:8].css'
     })
   ]
 }
 
 module.exports = (env, argv) => {
-  console.log('argv.mode=', argv.mode);  // 打印 mode 值
-  // 可以根据不同的模式来修改 config 配置文件
+  // 打印当前的 mode 值
+  console.log('argv.mode=', argv.mode);
+  // TODO:可以根据不同的模式来变更打包的行为
   return config
 }

@@ -4,7 +4,6 @@ import 'assets/css/index.scss'
 import 'assets/font/iconfont.css'
 
 import { add } from '@/js/utils'
-debugger
 add(10, 20)
 
 // 通过 js 的方式来使用图片，因为这个图片会转化成 base64 影响阅读，先注释掉
