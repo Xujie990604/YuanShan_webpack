@@ -61,26 +61,32 @@ const config = {
         ],
       },
       {
-        test: /\.(jpe?g|png|gif)$/i,       // 对于图片资源的处理
+        // 匹配图片资源
+        test: /\.(jpe?g|png|gif)$/i,
         type: 'asset',
         generator: {
-          filename: 'images/[name][hash:8][ext]'  // 输出文件位置与文件名
+          // 输出文件位置与文件名
+          filename: 'images/[name][hash:8][ext]'
         },
         parser: {
           dataUrlCondition: {
-            maxSize: 50 * 1024    // 50kb 以下图片转成 base64
+            // 50kb 以下图片转成 base64
+            maxSize: 50 * 1024
           }
         }
       },
       {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,   // 对于字体图标的处理
+        // 匹配字体图标
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
         type: 'asset',
         generator: {
-          filename: "fonts/[name][hash:8][ext]"     // 输出文件位置以及文件名
+          // 输出文件位置以及文件名
+          filename: "fonts/[name][hash:8][ext]"
         },
         parser: {
           dataUrlCondition: {
-            maxSize: 10 * 1024                // 10kb 以下转成 base64
+            // 10kb 以下转成 base64
+            maxSize: 10 * 1024
           }
         }
       },

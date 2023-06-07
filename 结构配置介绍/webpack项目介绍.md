@@ -19,3 +19,8 @@
 ### scss
 
 - 添加对 scss 语法的支持
+
+## 图片，字体资源
+
+- 不再使用 file-loader url-loader 来处理图片资源
+- 而是使用 webpack5 的资源模块来处理图片，字体
