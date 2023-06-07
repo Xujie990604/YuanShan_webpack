@@ -1,6 +1,7 @@
 module.exports = {
   presets: [
     [
+      // 预设是 babel 插件的集合
       "@babel/preset-env",
       {
         // useBuiltIns: false 默认值，无视浏览器兼容配置，引入所有 polyfill
@@ -17,6 +18,7 @@ module.exports = {
       }
     ]
   ],
+  // 未进入 ECMA 规范中的新特性，Babel 是无法进行处理的，必须要安装对应的插件
   plugins: [
     ['@babel/plugin-proposal-decorators', { legacy: true }],       // 对于类装饰器语法的支持
     ['@babel/plugin-proposal-class-properties', { loose: true }],   // 对于类属性的支持
