@@ -43,13 +43,21 @@ const config = {
   module: {
     rules: [ // 转换规则
       {
-        test: /\.(s[ac]|c)ss$/i,     // 匹配所有的 css/sass/scss 文件
-        use: [ // 需要使用的 loader (有顺序要求，从后向前执行)
-          // 'style-loader',             // 把 css 文件写入 style 然后插入文件
-          miniCssExtractPlugin.loader,   // 把 css 文件以 css 文件的形式引入 HTML 中
+        // 匹配所有的 css/sass/scss 文件
+        test: /\.(s[ac]|c)ss$/i,
+        // 需要使用的 loader (有顺序要求，从后向前执行)
+        use: [
+          // 把 css 语句写入 style 标签中，然后插入到 html 页面里
+          // ! 推荐使用 miniCssExtractPlugin 来优化
+          // 'style-loader',
+          // 把 css 语句以 css 文件的形式引入 HTML 中
+          miniCssExtractPlugin.loader,
+          // 识别 css 语句
           'css-loader',
-          'postcss-loader',              // 先使用 post-loader 解析 postcss 语法，然后再使用 css-loader 解析
-          'sass-loader',  // TODO: 这个顺序对吗？
+          // 先使用 post-loader 解析 postcss 语法，然后再使用 css-loader 解析 css 语法
+          'postcss-loader',
+          // 解析 scss 语法
+          'sass-loader',
         ],
       },
       {
@@ -99,7 +107,7 @@ const config = {
     }),
     // 每次打包前清除之前的 dist 文件夹
     new CleanWebpackPlugin(),
-    //把 css 文件以 css 文件的形式引入 HTML 中
+    //把 css 语句以 css 文件的形式引入 HTML 中
     new miniCssExtractPlugin({
       filename: '[name].[hash:8].css'
     }),

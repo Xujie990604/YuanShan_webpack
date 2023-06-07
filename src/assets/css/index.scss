@@ -2,15 +2,7 @@
 $color: rgb(190, 23, 168);
 
 body {
-  .content {
-    background-color: $color;
-    height: 400px;
-    width: 200px;
-    background: url("/public/login.png");
-  }
-
-  img {
-    height: 100px;
-    width: 100px;
+  .welcome {
+    color: $color;
   }
 }

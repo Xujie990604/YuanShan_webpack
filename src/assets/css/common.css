@@ -1,4 +1,10 @@
 p {
   color: red;
+  /* 用来测试 postCSS 添加前缀功能 */
   transform: translateX(20px);
+}
+
+body {
+  padding: 0;
+  margin: 0;
 }
