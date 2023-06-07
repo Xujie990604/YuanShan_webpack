@@ -18,7 +18,9 @@ const config = {
     // ! 打包生成的静态网站，在真实服务器上请求资源路径的基础路径(这个值需要和 dist 放在服务器上的目录层级一致)
     // publicPath: '/dist'
   },
-  // 打包慢一点，但是能够看到源代码的错误 TODO: 根据环境进行区分  
+  // TODO: 根据环境进行区分  
+  // 本地开发：eval-cheap-module-source-map 打包慢一点，但是能够看到源代码的错误
+  // 生产环境：node 不想让其他人看到源代码
   devtool: 'eval-cheap-module-source-map',
   // 本地服务器配置
   devServer: {
@@ -91,13 +93,16 @@ const config = {
         }
       },
       {
-        test: /\.js$/i,                   // 对于 js 文件的转化
+        // 匹配 js 文件
+        test: /\.js$/i,
         use: [
           {
             loader: 'babel-loader',
             options: {
               presets: [
-                '@babel/preset-env'  // 通过 npm 下载的 babel 官方维护预设   // 预设名和 babel.js 中对应
+                // 通过 npm 下载的 babel 官方维护预设   
+                // 预设名和 babelrc.js 中对应
+                '@babel/preset-env'
               ],
             }
           }

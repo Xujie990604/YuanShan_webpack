@@ -24,3 +24,7 @@
 
 - 不再使用 file-loader url-loader 来处理图片资源
 - 而是使用 webpack5 的资源模块来处理图片，字体
+
+## sourceMap
+
+- 根据本地环境和生产环境进行区分
