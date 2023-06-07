@@ -3,6 +3,7 @@ const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
+const copyWebpackPlugin = require('copy-webpack-plugin')
 
 // 打印环境变量
 console.log('process.env.NODE_ENV=', process.env.NODE_ENV)
@@ -12,13 +13,18 @@ const config = {
   entry: './src/index.js',   // 打包入口地址
   output: {
     filename: 'bundle.js',                       // 输出的文件名
-    path: path.join(__dirname, 'dist') // 输出的文件目录 
+    path: path.join(__dirname, 'dist'), // 输出的文件目录 
+    // ! 仅在生产环境生效
+    // ! 打包生成的静态网站，在真实服务器上请求资源路径的基础路径(这个值需要和 dist 放在服务器上的目录层级一致)
+    // publicPath: '/dist'
   },
-  devtool: 'eval-cheap-module-source-map',    // 打包慢一点，但是能够看到源代码的错误 TODO: 根据环境进行区分  
+  // 打包慢一点，但是能够看到源代码的错误 TODO: 根据环境进行区分  
+  devtool: 'eval-cheap-module-source-map',
   // 本地服务器配置
   devServer: {
     static: {
       // ! 仅在本地服务器启动时生效
+      // ! 当页面请求静态资源时，会将 public 当作本地服务器的根目录
       // 静态文件目录，本地服务器启动时不必 copy 此文件夹到 内存中的 dist 中，会直接来 当前项目的 public 文件夹磁盘位置读取
       directory: path.join(__dirname, 'public')
     },
@@ -89,13 +95,22 @@ const config = {
     // 创建一个 html 文件，并把 webpack 打包后的静态文件自动插入到这个 html 文件当中
     new htmlWebpackPlugin({
       // 使用指定 HTML 文件当做创建的模板
-      template: 'public/index.html'
+      template: './index.html'
     }),
     // 每次打包前清除之前的 dist 文件夹
     new CleanWebpackPlugin(),
     //把 css 文件以 css 文件的形式引入 HTML 中
     new miniCssExtractPlugin({
       filename: '[name].[hash:8].css'
+    }),
+    // 将 public 目录原封不到那个的复制到 dist 目录下
+    new copyWebpackPlugin({
+      patterns: [
+        {
+          from: './public',
+          to: './'
+        }
+      ]
     })
   ]
 }
