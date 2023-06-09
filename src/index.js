@@ -42,19 +42,24 @@
 // document.body.appendChild(icon)
 
 // 7.测试 ES6 语法
-class Author {
-  name = 'xujie'
-  age = 18
-  email = 'coder_xujie@163.com'
+// class Author {
+//   name = 'xujie'
+//   age = 18
+//   email = 'coder_xujie@163.com'
 
-  info = () => {
-    return {
-      name: this.name,
-      age: this.age,
-      email: this.email
-    }
-  }
-}
-const author = new Author()
-export default Author
+//   info = () => {
+//     return {
+//       name: this.name,
+//       age: this.age,
+//       email: this.email
+//     }
+//   }
+// }
+// const author = new Author()
+// export default Author
+
+// 8. 测试 JQ 的 CDN 引用
+import $ from 'jquery'
+
+$('.content').text('使用JQ插入的内容')
 

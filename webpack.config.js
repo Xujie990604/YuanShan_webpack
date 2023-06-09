@@ -4,6 +4,11 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const copyWebpackPlugin = require('copy-webpack-plugin')
+// webpack 构建费时插件
+const speedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
+const smp = new speedMeasureWebpackPlugin()
+// 打包文件体积大小
+const webpackBundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 // 打印环境变量
 console.log('process.env.NODE_ENV=', process.env.NODE_ENV)
@@ -34,6 +39,10 @@ const config = {
     port: 8080,        // 服务器端口号
     open: false        // 是否自动打开浏览器
   },
+  externals: {
+    // key 是包名，value 是该包在 window 上注册的全局变量名
+    jquery: "jQuery"
+  },
   resolve: {
     alias: { //配置别名
       '@': path.join(__dirname, 'src'),
@@ -56,6 +65,8 @@ const config = {
           // 'style-loader',
           // 把 css 语句以 css 文件的形式引入 HTML 中
           miniCssExtractPlugin.loader,
+          // 开启缓存 loader 结果
+          'cache-loader',
           // 识别 css 语句
           'css-loader',
           // 先使用 post-loader 解析 postcss 语法，然后再使用 css-loader 解析 css 语法
@@ -99,8 +110,17 @@ const config = {
         test: /\.js$/i,
         use: [
           {
+            // 使用多线程工具，开启多线程打包
+            loader: 'thread-loader',
+            options: {
+              worker: 3
+            }
+          },
+          {
             loader: 'babel-loader',
             options: {
+              // 启动缓存
+              cacheDirectory: true,
               presets: [
                 // 通过 npm 下载的 babel 官方维护预设   
                 // 预设名和 babelrc.js 中对应
@@ -132,7 +152,8 @@ const config = {
           to: './'
         }
       ]
-    })
+    }),
+    new webpackBundleAnalyzer()
   ]
 }
 
@@ -140,5 +161,6 @@ module.exports = (env, argv) => {
   // 打印当前的 mode 值
   console.log('argv.mode=', argv.mode);
   // TODO:可以根据不同的模式来变更打包的行为
-  return config
+  // 输出 webpack 构建费时数据
+  return smp.wrap(config)
 }
