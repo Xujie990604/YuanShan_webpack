@@ -9,10 +9,17 @@ const speedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
 const smp = new speedMeasureWebpackPlugin()
 // 打包文件体积大小
 const webpackBundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// 压缩 CSS
+const optimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+// 压缩 JS
+const terserWebpackPlugin = require('terser-webpack-plugin')
+// 清除无用的 CSS
+const { PurgeCSSPlugin } = require('purgecss-webpack-plugin')
+// 文件匹配模式
+const glob = require('glob');
 
 // 打印环境变量
 console.log('process.env.NODE_ENV=', process.env.NODE_ENV)
-
 const config = {
   mode: 'development',       // 配置文件的模式为 development
   entry: './src/index.js',   // 打包入口地址
@@ -38,6 +45,15 @@ const config = {
     compress: true,    // 是否启动压缩 public 中的目录中的内容
     port: 8080,        // 服务器端口号
     open: false        // 是否自动打开浏览器
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      // 添加 css 压缩配置
+      new optimizeCssAssetsWebpackPlugin({}),
+      // 添加压缩 JS 配置
+      new terserWebpackPlugin({})
+    ]
   },
   externals: {
     // key 是包名，value 是该包在 window 上注册的全局变量名
@@ -153,7 +169,16 @@ const config = {
         }
       ]
     }),
-    new webpackBundleAnalyzer()
+    new webpackBundleAnalyzer({
+      analyzerMode: 'disabled',  // 是否启动展示结果的网页
+      generateStatsFile: true    // 是否生成 status.json 文件
+    }),
+    // 清除无用的 CSS
+    new PurgeCSSPlugin({
+      paths: glob.sync(`${path.resolve(__dirname, 'src')}/**/*`, {
+        nodir: true, // 過濾資料夾結果 (第五步)
+      }),
+    })
   ]
 }
 

@@ -1,10 +1,30 @@
 # Webpack 项目介绍
 
 - 使用别名来优化使用
-- 配置可省略后缀名
-- 配置 webpack 解析模块优先搜索目录，加快 webpack 的查找速度
-- 使用 externals 配置选项实现`「从输出的 bundle 中排除依赖」`
-- baber-loader 开启缓存，提升重复构建的速度
+- 配置文件可省略后缀名
+
+## webpack 的进阶优化
+
+### 一 优化构建速度
+
+1. speed-measure-webpack-plugin 查看 webpack 的构建费时情况
+2. 配置 webpack 解析模块优先搜索目录，加快 webpack 的查找速度
+3. cache-loader 缓存一些性能开销较大的 loader 的处理结果
+4. baber-loader 开启缓存，提升重复构建的速度
+5. 使用 externals 配置选项实现`「从输出的 bundle 中排除依赖」`
+6. thread-loader 开启多进程打包优化(适合大项目构建优化，在一些小项目中反而因为进程之间的通信而增加构建时间)
+
+### 二 优化构建结果
+
+1. webpack-bundle-analyzer 查看 webpack 的构建结果
+2. optimize-css-assets-webpack-plugin 压缩 CSS
+3. terser-webpack-plugin 压缩 JS(webpack 默认开启)
+4. purgecss-webpack-plugin 清除无用的 CSS
+5. 在生产环境下开启 tree-shaking ，剔除没有使用的代码，以降低包的体积(Tree-shaking 可以使得项目最终构建 Bundle 结果中只包含你实际需要的代码)
+
+### 三 优化运行时体验(首屏加载速度)
+
+1. 代码懒加载(借助 ES6 的 import('') 函数)
 
 ## 插件
 
@@ -14,6 +34,9 @@
 4. copyWebpackPlugin 复制指定文件夹到 dist 目录中
 5. speed-measure-webpack-plugin 查看 webpack 的构建费时情况
 6. webpack-bundle-analyzer 查看打包文件的体积大小
+7. optimize-css-assets-webpack-plugin 压缩 CSS
+8. terser-webpack-plugin 压缩 JS(webpack 默认开启)
+9. purgecss-webpack-plugin 清除无用的 CSS
 
 ## loader
 
@@ -22,8 +45,8 @@
 3. postcss-loader 识别 postcss 语法
 4. sass-loader 识别 scss 语法
 5. babel-loader 识别 ES6+ 语法并转移成兼容指定浏览器的 JS 代码
-6. thread-loader 开启多线程打包优化
-7. cache-loader 缓存一些性能开销较大的 loader 的处理结果
+6. cache-loader 缓存一些性能开销较大的 loader 的处理结果
+7. thread-loader 开启多进程打包优化
 
 ## 本地服务器
 
