@@ -65,7 +65,7 @@ const config = {
       'assets': path.join(__dirname, 'src/assets')
     },
     // 可以省略后缀名，会根据列表中的后缀名逐个尝试
-    extensions: ['.js', 'ts', '.json'],
+    extensions: ['.js', '.ts', '.json'],
     // 解析模块时需要优先搜索的目录
     modules: [path.join(__dirname, 'src'), 'node_modules']
   },
