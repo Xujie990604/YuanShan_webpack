@@ -14,7 +14,7 @@
     "webpack",
     "learn"
   ],
-  "author": "xujie",
+  "author": "YuanShan_webpack",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.21.4",

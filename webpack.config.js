@@ -19,9 +19,9 @@ const { PurgeCSSPlugin } = require('purgecss-webpack-plugin')
 const glob = require('glob');
 
 // 打印环境变量
-console.log('process.env.NODE_ENV=', process.env.NODE_ENV)
+console.log('当前打包的 node 环境变量 process.env.NODE_ENV=', process.env.NODE_ENV)
 const config = {
-  mode: 'development',       // 配置文件的模式为 development
+  mode: 'development',       // 配置文件的模式为 development(NOTE:默认为 dev 模式，但是这个可以通过命令行来动态指定)
   entry: './src/index.js',   // 打包入口地址
   output: {
     filename: 'bundle.js',                       // 输出的文件名
@@ -30,10 +30,8 @@ const config = {
     // ! 打包生成的静态网站，在真实服务器上请求资源路径的基础路径(这个值需要和 dist 放在服务器上的目录层级一致)
     // publicPath: '/dist'
   },
-  // TODO: 根据环境进行区分  
-  // 本地开发：eval-cheap-module-source-map 打包慢一点，但是能够看到源代码的错误
-  // 生产环境：node 不想让其他人看到源代码
-  devtool: 'eval-cheap-module-source-map',
+  // NOTE: 根据环境进行区分  
+  // devtool: '',
   // 本地服务器配置
   devServer: {
     static: {
@@ -183,8 +181,19 @@ const config = {
 
 module.exports = (env, argv) => {
   // 打印当前的 mode 值
-  console.log('argv.mode=', argv.mode);
-  // TODO:可以根据不同的模式来变更打包的行为
+  console.log('当前的打包模式 argv.mode=', argv.mode);
+  // NOTE:可以根据不同的模式来变更打包的行为
+
+  if (argv.mode === 'development') {
+    // 本地开发： 打包慢一点，但是能在源码级别的调试错误
+    config.devtool = "eval-cheap-module-source-map"
+  } else if (argv.mode === "production") {
+    // 生产环境：调试只能看到模块信息和行信息，不能看到源码
+    config.devtool = "nosources-source-map"
+  } else {
+    config.devtool = 'cheap-module-source-map'
+  }
+
   // 输出 webpack 构建费时数据
   return smp.wrap(config)
 }
