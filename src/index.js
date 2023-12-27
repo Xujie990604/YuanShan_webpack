@@ -1,11 +1,7 @@
-import { add } from '@/utils/utils'
+function add(num1, num2 = 10) {
+  return num1 + num2
+}
 
-console.log(add(100, 200));
+let result = add(20)
 
-let name = 'xujie';
-let age = 20
-const obj = [
-  name,
-  aged
-]
-console.log(obj);
+console.log(result)

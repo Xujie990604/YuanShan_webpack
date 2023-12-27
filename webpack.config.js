@@ -183,7 +183,6 @@ module.exports = (env, argv) => {
   // 打印当前的 mode 值
   console.log('当前的打包模式 argv.mode=', argv.mode);
   // NOTE:可以根据不同的模式来变更打包的行为
-
   if (argv.mode === 'development') {
     // 本地开发： 打包慢一点，但是能在源码级别的调试错误
     config.devtool = "eval-cheap-module-source-map"
