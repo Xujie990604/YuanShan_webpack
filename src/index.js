@@ -1,1 +1,0 @@
-import webpackTest from '/src/js/webpackTest'

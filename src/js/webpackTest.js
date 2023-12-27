@@ -3,7 +3,7 @@
  */
 
 // 1.测试别名的使用
-import { add } from '@/js/utils'
+import { add } from '@/utils/utils'
 add(10, 20)
 
 // 2.可以直接使用 public 目录中的内容

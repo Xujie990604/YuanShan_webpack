@@ -61,8 +61,7 @@ const config = {
   },
   resolve: {
     alias: { //配置别名
-      '@': path.join(__dirname, 'src'),
-      'assets': path.join(__dirname, 'src/assets')
+      '@': path.join(__dirname, 'src')
     },
     // 可以省略后缀名，会根据列表中的后缀名逐个尝试
     extensions: ['.js', '.ts', '.json'],

@@ -7,7 +7,8 @@
     "test": "cross-env NODE_ENV=test webpack --mode production",
     "build": "cross-env NODE_ENV=prod webpack --mode production",
     "buildWithDev": "cross-env NODE_ENV=dev webpack --mode development",
-    "buildWithNone": "webpack --mode none"
+    "buildWithNone": "webpack --mode none",
+    "jsdocs": "jsdoc -c jsdoc.config.json"
   },
   "keywords": [
     "webpack",
@@ -24,6 +25,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.1",
+    "jsdoc": "^4.0.2",
     "mini-css-extract-plugin": "^1.3.6",
     "node-sass": "^8.0.0",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
