@@ -190,7 +190,8 @@ module.exports = (env, argv) => {
     // 生产环境：调试只能看到模块信息和行信息，不能看到源码
     config.devtool = "nosources-source-map"
   } else {
-    config.devtool = 'cheap-module-source-map'
+    // 自定义：代码中没有 sourceMap 源码是经过 loader 处理过的
+    config.devtool = 'hidden-cheap-source-map'
   }
 
   // 输出 webpack 构建费时数据

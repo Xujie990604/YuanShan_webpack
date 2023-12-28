@@ -1,7 +1,9 @@
-function add(num1, num2 = 10) {
-  return num1 + num2
+class Person {
+  constructor(name, age) {
+    this.name = name
+    this.age = age
+  }
 }
 
-let result = add(20)
-
-console.log(result)
+const person = new Person('xujie', 20)
+console.log(person);
