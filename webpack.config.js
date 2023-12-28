@@ -1,9 +1,11 @@
 const path = require('path');
+const fs = require("fs")
 
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const copyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
 // webpack 构建费时插件
 const speedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
 const smp = new speedMeasureWebpackPlugin()
@@ -17,11 +19,25 @@ const terserWebpackPlugin = require('terser-webpack-plugin')
 const { PurgeCSSPlugin } = require('purgecss-webpack-plugin')
 // 文件匹配模式
 const glob = require('glob');
+// 导入项目中的全局变量文件
+const { version } = require('./project.config');
+console.log(version);
 
-// 打印环境变量
+// 打印环境变量(NODE_ENV 属性不是 Node 原生自带的属性，是通过 cross-env 插件注入(注入的值是从命令行读取的)的)
 console.log('当前打包的 node 环境变量 process.env.NODE_ENV=', process.env.NODE_ENV)
+
+// 根据当前的环境变量来读取对应的环境变量文件
+let envPath = path.resolve(__dirname, `.env.${process.env.NODE_ENV}`);
+// 使用 dotenv 插件，将环境变量文件中的内容注入到 process.env 中
+require('dotenv').config({
+  path: fs.existsSync(envPath) ? envPath : path.resolve(__dirname, '.env')
+})
+console.log('随着环境变量变化的BASE_URL:', process.env.BASE_URL);
+
+
+// webpack 的配置信息
 const config = {
-  mode: 'development',       // 配置文件的模式为 development(NOTE:默认为 dev 模式，但是这个可以通过命令行来动态指定)
+  mode: 'development',       // 配置文件的模式为 development(NOTE:默认为 development 模式，但是这个可以通过命令行 mode 来动态指定)
   entry: './src/index.js',   // 打包入口地址
   output: {
     filename: 'bundle.js',                       // 输出的文件名
@@ -175,6 +191,11 @@ const config = {
       paths: glob.sync(`${path.resolve(__dirname, 'src')}/**/*`, {
         nodir: true, // 過濾資料夾結果 (第五步)
       }),
+    }),
+    // 在浏览器中注入全局变量(一般搭配着环境变量文件使用)
+    new webpack.DefinePlugin({
+      BASE_URL: JSON.stringify(process.env.BASE_URL),
+      VERSION: JSON.stringify(version)
     })
   ]
 }
