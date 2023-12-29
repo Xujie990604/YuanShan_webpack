@@ -1,5 +1,9 @@
-p {
+p.red {
   color: red;
+
+}
+
+p.transform {
   /* 用来测试 postCSS 添加前缀功能 */
   transform: translateX(20px);
 }

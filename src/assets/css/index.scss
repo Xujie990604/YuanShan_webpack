@@ -1,10 +1,8 @@
-// 虽然是sass 但是后缀名只能是 scss
-$color: rgb(190, 23, 168);
+// 虽然是 sass 但是后缀名只能是 scss
+$color: green;
 
 body {
-  .welcome {
+  .scss-test {
     color: $color;
   }
 }
-
-// TODO: scss 文件会被编辑成什么样子

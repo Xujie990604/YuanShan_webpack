@@ -21,7 +21,6 @@ const { PurgeCSSPlugin } = require('purgecss-webpack-plugin')
 const glob = require('glob');
 // 导入项目中的全局变量文件
 const { version } = require('./project.config');
-console.log(version);
 
 // 打印环境变量(NODE_ENV 属性不是 Node 原生自带的属性，是通过 cross-env 插件注入(注入的值是从命令行读取的)的)
 console.log('当前打包的 node 环境变量 process.env.NODE_ENV=', process.env.NODE_ENV)
@@ -32,7 +31,6 @@ let envPath = path.resolve(__dirname, `.env.${process.env.NODE_ENV}`);
 require('dotenv').config({
   path: fs.existsSync(envPath) ? envPath : path.resolve(__dirname, '.env')
 })
-console.log('随着环境变量变化的BASE_URL:', process.env.BASE_URL);
 
 
 // webpack 的配置信息
@@ -189,7 +187,7 @@ const config = {
     // 清除无用的 CSS
     new PurgeCSSPlugin({
       paths: glob.sync(`${path.resolve(__dirname, 'src')}/**/*`, {
-        nodir: true, // 過濾資料夾結果 (第五步)
+        nodir: true, // 过滤资源夹结果
       }),
     }),
     // 在浏览器中注入全局变量(一般搭配着环境变量文件使用)
@@ -202,7 +200,7 @@ const config = {
 
 module.exports = (env, argv) => {
   // 打印当前的 mode 值
-  console.log('当前的打包模式 argv.mode=', argv.mode);
+  console.log('webpack 当前的打包模式 argv.mode=', argv.mode);
   // NOTE:可以根据不同的模式来变更打包的行为
   if (argv.mode === 'development') {
     // 本地开发： 打包慢一点，但是能在源码级别的调试错误

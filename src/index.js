@@ -1,2 +1,1 @@
-console.log(BASE_URL);
-console.log(VERSION);
+import alias from '@/js/ES6TransformTest'

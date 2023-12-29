@@ -12,3 +12,5 @@ addWithoutType(100, '200')
 
 console.log(colorArray[0]);
 colorArray.push(100)
+
+export default {}
