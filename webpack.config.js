@@ -61,10 +61,11 @@ const config = {
   optimization: {
     minimize: true,
     minimizer: [
+      // NOTE: 代码压缩后，代码可读性变低。真实项目需要开启，但是学习项目暂时关闭
       // 添加 css 压缩配置
-      new optimizeCssAssetsWebpackPlugin({}),
+      // new optimizeCssAssetsWebpackPlugin({}),
       // 添加压缩 JS 配置
-      new terserWebpackPlugin({})
+      // new terserWebpackPlugin({})
     ]
   },
   externals: {
@@ -208,6 +209,8 @@ module.exports = (env, argv) => {
   } else if (argv.mode === "production") {
     // 生产环境：调试只能看到模块信息和行信息，不能看到源码
     config.devtool = "nosources-source-map"
+    // 开启代码压缩来降低最终代码的体积
+    config.optimization.minimizer.push(new terserWebpackPlugin({}), new optimizeCssAssetsWebpackPlugin({}))
   } else {
     // 自定义：代码中没有 sourceMap 源码是经过 loader 处理过的
     config.devtool = 'hidden-cheap-source-map'
