@@ -36,9 +36,12 @@ require('dotenv').config({
 // webpack 的配置信息
 const config = {
   mode: 'development',       // 配置文件的模式为 development(NOTE:默认为 development 模式，但是这个可以通过命令行 mode 来动态指定)
-  entry: './src/index.js',   // 打包入口地址
+  entry: { // 多入口配置
+    main: './src/entry/index.js',
+    about: './src/entry/about.js'
+  },
   output: {
-    filename: 'bundle.js',                       // 输出的文件名
+    filename: '[name].js',                       // 输出的文件名，[name] 与 entry 中的 key 相对应
     path: path.join(__dirname, 'dist'), // 输出的文件目录 
     // ! 仅在生产环境生效
     // ! 打包生成的静态网站，在真实服务器上请求资源路径的基础路径(这个值需要和 dist 放在服务器上的目录层级一致)
@@ -162,9 +165,16 @@ const config = {
   },
   plugins: [ // 配置插件
     // 创建一个 html 文件，并把 webpack 打包后的静态文件自动插入到这个 html 文件当中
+    // 多页应用配置形式
     new htmlWebpackPlugin({
-      // 使用指定 HTML 文件当做创建的模板
-      template: './index.html'
+      template: './template/index.html',  // 使用指定 HTML 文件当做创建的模板
+      filename: 'index.html',
+      chunks: ['main'] // 指定入口文件
+    }),
+    new htmlWebpackPlugin({
+      template: './template/about.html',
+      filename: 'about.html',
+      chunks: ['about']
     }),
     // 每次打包前清除之前的 dist 文件夹
     new CleanWebpackPlugin(),
