@@ -35,34 +35,42 @@ require('dotenv').config({
 
 // webpack 的配置信息
 const config = {
-  mode: 'development',       // 配置文件的模式为 development(NOTE:默认为 development 模式，但是这个可以通过命令行 mode 来动态指定)
-  entry: { // 多入口配置
+  // NOTE:默认配置为 development 模式，但是这个可以通过命令行 mode 来动态指定
+  // 采用不同的模式，webpack 会启用不同的内置优化
+  mode: 'development',
+  // 开始应用程序打包过程的一个或者多个起点
+  // 该项目使用多页面(MPA)配置形式
+  entry: { 
     main: './src/entry/index.js',
     about: './src/entry/about.js'
   },
+  // 告知 webpack 如何向硬盘写入编译文件
   output: {
-    filename: '[name].js',                       // 输出的文件名，[name] 与 entry 中的 key 相对应
+    filename: '[name].js',                       // 输出的文件名，[name] 为 webpack 中的占位符， 与 entry 中的 key 名相对应
     path: path.join(__dirname, 'dist'), // 输出的文件目录 
-    // ! 仅在生产环境生效
     // ! 打包生成的静态网站，在真实服务器上请求资源路径的基础路径(这个值需要和 dist 放在服务器上的目录层级一致)
-    // publicPath: '/dist'
+    // publicPath: '/app/web/'
   },
   // NOTE: 根据环境进行区分  
+  // 配置是否生成，以及如何生成 source map
   // devtool: '',
   // 本地服务器配置
   devServer: {
     static: {
       // ! 仅在本地服务器启动时生效
-      // ! 当页面请求静态资源时，会将 public 当作本地服务器的根目录
-      // 静态文件目录，本地服务器启动时不必 copy 此文件夹到 内存中的 dist 中，会直接来 当前项目的 public 文件夹磁盘位置读取
+      // 配置提供静态文件的目录。本地服务器启动时不必 copy 此文件夹到 内存中的 dist 中，会直接来当前项目的 public 文件夹磁盘位置读取
       directory: path.join(__dirname, 'public')
     },
+    hot: true,         // 开启热更新
     compress: true,    // 是否启动压缩 public 中的目录中的内容
     port: 8080,        // 服务器端口号
-    open: false        // 是否自动打开浏览器
+    open: true         // 是否自动打开浏览器
   },
+  // webpack 优化
   optimization: {
+    // 开启压缩
     minimize: true,
+    // 自己选择 plugin 来进行压缩
     minimizer: [
       // NOTE: 代码压缩后，代码可读性变低。真实项目需要开启，但是学习项目暂时关闭
       // 添加 css 压缩配置
@@ -71,25 +79,29 @@ const config = {
       // new terserWebpackPlugin({})
     ]
   },
+  // 放置将某些包打包到 bundle 中，而是在运行时再去外部获取
   externals: {
     // key 是包名，value 是该包在 window 上注册的全局变量名
     jquery: "jQuery"
   },
+  // 配置模块如何解析
   resolve: {
-    alias: { //配置别名
+    // 配置别名
+    alias: { 
       '@': path.join(__dirname, 'src')
     },
-    // 可以省略后缀名，会根据列表中的后缀名逐个尝试
+    // 可以省略后缀名，解析时会根据配置数组中的后缀名逐个尝试
     extensions: ['.js', '.ts', '.json'],
     // 解析模块时需要优先搜索的目录
     modules: [path.join(__dirname, 'src'), 'node_modules']
   },
+  // 如何处理项目中不同类型的模块
   module: {
     rules: [ // 转换规则
       {
         // 匹配所有的 css/sass/scss 文件
         test: /\.(s[ac]|c)ss$/i,
-        // 需要使用的 loader (有顺序要求，从后向前执行)
+        // 需要使用的 loader (有顺序要求，从后向前或者从右向左执行)
         use: [
           // 把 css 语句写入 style 标签中，然后插入到 html 页面里
           // ! 推荐使用 miniCssExtractPlugin 来优化
@@ -163,12 +175,13 @@ const config = {
       }
     ]
   },
-  plugins: [ // 配置插件
+  // 配置 webpack 插件
+  plugins: [ 
     // 创建一个 html 文件，并把 webpack 打包后的静态文件自动插入到这个 html 文件当中
     // 多页应用配置形式
     new htmlWebpackPlugin({
       template: './template/index.html',  // 使用指定 HTML 文件当做创建的模板
-      filename: 'index.html',
+      filename: 'index.html', // 生成文件的名称
       chunks: ['main'] // 指定入口文件
     }),
     new htmlWebpackPlugin({
@@ -191,6 +204,7 @@ const config = {
         }
       ]
     }),
+    // 分析构建产物中都引入哪些模块，模块的体积是多少
     new webpackBundleAnalyzer({
       analyzerMode: 'disabled',  // 是否启动展示结果的网页
       generateStatsFile: true    // 是否生成 status.json 文件
@@ -209,7 +223,14 @@ const config = {
   ]
 }
 
+/**
+ * 将 webpack 配置文件以函数的形式导出
+ * @param {object} env 环境
+ * @param {object} argv webpack 配置项
+ * @returns {object} 最终生成的 webpack 配置项
+ */
 module.exports = (env, argv) => {
+  console.log('env', env);
   // 打印当前的 mode 值
   console.log('webpack 当前的打包模式 argv.mode=', argv.mode);
   // NOTE:可以根据不同的模式来变更打包的行为
