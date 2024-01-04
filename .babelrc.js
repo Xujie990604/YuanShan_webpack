@@ -24,7 +24,7 @@ module.exports = {
   plugins: [
     ['@babel/plugin-proposal-decorators', { legacy: true }],       // 对于类装饰器语法的支持
     ['@babel/plugin-proposal-class-properties', { loose: true }],   // 对于类属性的支持
-    ["@babel/plugin-proposal-private-methods", { "loose": true }],
-    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
+    ["@babel/plugin-proposal-private-methods", { loose: true }],
+    ["@babel/plugin-proposal-private-property-in-object", { loose: true }]
   ]
 }

@@ -35,7 +35,7 @@ require('dotenv').config({
 
 // webpack 的配置信息
 const config = {
-  // NOTE:默认配置为 development 模式，但是这个可以通过命令行 mode 来动态指定
+  // NOTE:默认配置为 development 模式，但是这个可以通过命令行 mode 字段来覆盖该配置项
   // 采用不同的模式，webpack 会启用不同的内置优化
   mode: 'development',
   // 开始应用程序打包过程的一个或者多个起点
@@ -97,24 +97,24 @@ const config = {
   },
   // 如何处理项目中不同类型的模块
   module: {
-    rules: [ // 转换规则
+    rules: [
       {
         // 匹配所有的 css/sass/scss 文件
         test: /\.(s[ac]|c)ss$/i,
         // 需要使用的 loader (有顺序要求，从后向前或者从右向左执行)
         use: [
           // 把 css 语句写入 style 标签中，然后插入到 html 页面里
-          // ! 推荐使用 miniCssExtractPlugin 来优化
+          // ! 推荐使用 miniCssExtractPlugin 来优化，不再推荐使用 style-loader
           // 'style-loader',
           // 把 css 语句以 css 文件的形式引入 HTML 中
           miniCssExtractPlugin.loader,
           // 开启缓存 loader 结果
           'cache-loader',
-          // 识别 css 语句
+          // 识别 css 语句，将 CSS 转化成 Commonjs 模块
           'css-loader',
           // 先使用 post-loader 解析 postcss 语法，然后再使用 css-loader 解析 css 语法
           'postcss-loader',
-          // 解析 scss 语法
+          // 解析 scss 语法，编译成 CSS 语句
           'sass-loader',
         ],
       },
@@ -154,6 +154,7 @@ const config = {
         use: [
           {
             // 使用多线程工具，开启多线程打包
+            // 每个 worker 都是一个独立的 node.js 进程，进程之间通信也会有性能损耗，请仅在耗时的操作中使用此 loader
             loader: 'thread-loader',
             options: {
               worker: 3
@@ -164,11 +165,9 @@ const config = {
             options: {
               // 启动缓存
               cacheDirectory: true,
-              presets: [
-                // 通过 npm 下载的 babel 官方维护预设   
-                // 预设名和 babelrc.js 中对应
-                '@babel/preset-env'
-              ],
+              // 通过 npm 下载的 babel 官方维护预设   
+              // 预设名和 babelrc.js 中对应, 因为 babel-loader 的配置项过多，所以单独抽离出一个文件来
+              presets: ['@babel/preset-env'],
             }
           }
         ]

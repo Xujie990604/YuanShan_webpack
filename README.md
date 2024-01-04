@@ -37,13 +37,14 @@
 7. optimize-css-assets-webpack-plugin 压缩 CSS
 8. terser-webpack-plugin 压缩 JS(webpack 默认开启)
 9. purgecss-webpack-plugin 清除无用的 CSS
+10. webpack.DefinePlugin 在浏览器中注入全局变量
 
 ## 三、loader
 
 1. style-loader 把 css 语句写入 style 标签中，然后插入到 html 页面里
 2. css-loader 识别 CSS 语法
 3. postcss-loader 识别 postcss 语法
-4. sass-loader 识别 scss 语法
+4. sass-loader 识别 scss 语法，编译成 CSS 语句
 5. babel-loader 识别 ES6+ 语法并转移成兼容指定浏览器的 JS 代码
 6. cache-loader 缓存一些性能开销较大的 loader 的处理结果
 7. thread-loader 开启多进程打包优化
@@ -51,6 +52,7 @@
 ## 四、本地服务器
 
 - 开启本地服务器
+- 开发阶段开启热更新
 
 ## 五、cross-env
 
@@ -62,7 +64,7 @@
 ### 6.1 postcss
 
 - 添加对 postcss 的支持
-- 使用 postcss-preset-env 插件来自动添加浏览器前缀
+- 使用 postcss-preset-env 插件来转换 CSS 高级语句
 
 ### 6.2 scss
 
