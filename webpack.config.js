@@ -41,7 +41,7 @@ const config = {
   // 开始应用程序打包过程的一个或者多个起点
   // 该项目使用多页面(MPA)配置形式
   entry: { 
-    main: './src/entry/index.js',
+    main: './src/entry/index.ts',
     about: './src/entry/about.js'
   },
   // 告知 webpack 如何向硬盘写入编译文件
@@ -171,7 +171,13 @@ const config = {
             }
           }
         ]
-      }
+      },
+      // 匹配 TS 文件
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
     ]
   },
   // 配置 webpack 插件
