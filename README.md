@@ -9,9 +9,9 @@
 
 1. speed-measure-webpack-plugin 查看 webpack 的构建费时情况
 2. 配置 webpack 解析模块优先搜索目录，加快 webpack 的查找速度
-3. cache-loader 缓存一些性能开销较大的 loader 的处理结果
-4. baber-loader 开启缓存，提升重复构建的速度
-5. 使用 externals 配置选项实现`「从输出的 bundle 中排除依赖」`
+3. cache-loader 开启 CSS 缓存，提升重复构建的速度
+4. baber-loader 开启 JS 缓存，提升重复构建的速度
+5. 使用 externals 配置选项实现`「从输出的 bundle 中排除依赖」`， 在运行阶段通过 CDN(内容分发网络) 来获取
 6. thread-loader 开启多进程打包优化(适合大项目构建优化，在一些小项目中反而因为进程之间的通信而增加构建时间)
 
 ### 1.2 优化构建结果
@@ -24,7 +24,7 @@
 
 ### 1.3 优化运行时体验(首屏加载速度)
 
-1. 代码懒加载(借助 ES6 的 import('') 函数)
+1. 代码懒加载(借助 ES6 的 import() 函数来实现动态加载)
 
 ## 二、插件
 
